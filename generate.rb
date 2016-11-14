@@ -1,21 +1,17 @@
 require 'csv'
-require 'gimei'
+require './employee_generator'
 
-#employment_patterns = %w(正社員 契約社員 派遣社員 アルバイト)
-positions = %w(専務 乗務 部長 次長 課長 係長 主任 なし)
-depts = %w(経理部 営業部 製造部 販売部 開発部 人事部 財務部 総務部 企画部 情報システム部)
+eg = EmployeeGenerator.new
 
-ARGV[0].to_i.times do
-  line = []
-  gimei = Gimei.new
-  line.push gimei.last.kanji
-  line.push gimei.first.kanji
-  line.push gimei.last.hiragana
-  line.push gimei.first.hiragana
-  line.push gimei.male? ? '男性' : '女性'
-  line.push positions.sample
-  line.push rand(200..2000)
-  line.push depts.sample
-  puts line.join(',')
+eps = []
+eg.depts.each do |dept|
+  eps << eg.generate(position: '部長', dept: dept).values
+  eg.generate_list(10, position: '課長', dept: dept).each { |ep| eps << ep.values }
+  eg.generate_list(3, position: '係長', dept: dept).each { |ep| eps << ep.values }
+  eg.generate_list(120, position: 'なし', dept: dept).each { |ep| eps << ep.values }
 end
 
+csv = CSV.open('./data/output.csv', 'w')
+csv.puts(eg.header)
+eps.each { |ep| csv.puts(ep) }
+csv.close
