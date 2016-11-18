@@ -8,11 +8,11 @@ class EmployeeGenerator
   def initialize
     @positions = %w(部長 課長 係長 なし)
     @depts = %w(経理部 営業部 製造部 販売部 開発部 人事部 財務部 総務部 企画部 情報システム部)
-    @skills = %w(MOS 簿記3級 基本情報技術者 英検2級)
+    @skills = %w(MOS 簿記3級 基本情報技術者 英検2級以上 TOEIC600点以上)
   end
 
   def header
-    %w(姓 姓（かな） 名 名（かな） 性別 役職 部署 年齢 給与)
+    %w(姓 名 せい めい 性別 役職 部署 年齢 給与)
   end
 
   def generate(attr = {})
@@ -28,6 +28,7 @@ class EmployeeGenerator
     }
     employee[:age] = attr[:age] ||  age(attr[:position])
     employee[:salary] = attr[:salary] || salary(attr[:position])
+    employee[:skills] = attr[:skills] || skills()
     return employee
   end
 
@@ -61,5 +62,9 @@ class EmployeeGenerator
     else
       (200000..400000).to_a.sample
     end
+  end
+
+  def skills
+    @skills.sample(rand(3)).join(' ')
   end
 end
