@@ -12,7 +12,7 @@ class EmployeeGenerator
   end
 
   def header
-    %w(姓 名 せい めい 性別 役職 部署 年齢 給与)
+    %w(姓 名 せい めい 性別 役職 部署 年齢 給与 資格)
   end
 
   def generate(attr = {})
