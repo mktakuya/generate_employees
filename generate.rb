@@ -13,5 +13,5 @@ end
 
 csv = CSV.open('./data/output.csv', 'w')
 csv.puts(eg.header)
-eps.each { |ep| csv.puts(ep) }
+eps.shuffle.each { |ep| csv.puts(ep) }
 csv.close
